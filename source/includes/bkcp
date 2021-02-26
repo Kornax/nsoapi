@@ -1,30 +1,3 @@
----
-title: NBI para NSO Empresariales
-
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - python
-
-toc_footers:
-  - <a href='https://corp.antel.com.uy/wiki/display/NSO'>Wiki del Proyecto</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
-
-search: true
----
-
-# Introducción
-
-Para realizar las pruebas en NSO se creó un docker exclusivo para uso de SESE, dentro del mismo se cargaron los paquetes con el código de las consultas a probar.
-
-<a href='https://corp.antel.com.uy/wiki/display/NSO'>Más Información en la wiki</a>
-
-# Autenticación
-
-El acceso es con una autenticación de usuario/contraseña. <a href='https://corp.antel.com.uy/wiki/display/NSO'>Ver Wiki</a>
-
 # ONU
 
 ## Show ONU
