@@ -1,0 +1,69 @@
+---
+# Introducción
+
+La API RESTCONF de NSO es muy similar a cualquier tipo de API Web que cumple con los principios de arquitectura REST. 
+Permite las operaciones típicas POST, PUT, PATCH, GET, DEL, etc. Acepta la información por medio de HTTP en los formatos tradicionales: JSON u XML.
+Puede ser invocada mediante el comando curl en una cli, mediante POSTMAN, Python, PHP u otro tipo de lenguaje que maneje interfases REST.
+
+En este documento se detalla como es la API RESTCONF de NSO, para los métodos de aprovisionamiento, configuración y 
+consulta de servicios sobre la red de acceso GPON.
+
+Por más información dirigirse a la wiki: <a href='https://corp.antel.com.uy/wiki/display/NSO'>Wiki-NSO-Antel</a>
+
+---
+# Seguimiento de cambios
+
+## v1.0 - 26/02/2021
+
+Se crea la documentación
+
+---
+# Acceso y Autenticación
+
+El acceso es con una autenticación básica de usuario y contraseña.
+
+Solicitar a NsoSoporte@mail.Antel.com.uy tanto las credenciales para el acceso, 
+como la dirección IP y puerto para poder acceder a la API.
+
+---
+# Parámetros generales
+
+La URL principal para el acceso es la siguiente:
+
+`http://<IP-NSO>:<PUERTO-NSO>/restconf/`
+
+Donde `<IP-NSO>` y `<PUERTO-NSO>` son la dirección IPv4 y puerto TCP del servidor NSO respectivamente.
+
+---
+# Formato de respuesta
+
+Todos los métodos aceptan el encabezado: 
+
+`Accept: application/yang-data+json` o `Accept: application/yang-data+xml`
+
+Para recibir las respuestas en los formatos JSON o XML.
+
+NSO cuenta con una sistema de commit queues o colas de commit. Esto permite encolar solicitudes sobre un mismo equipo de red.
+Las operaciones que sean aceptadas en la cola (sin errores de formato) van a obtener una respuesta del tipo:
+
+`
+{
+  "commit-queue": {
+    "id": "1614016683699",
+    "status": "completed"
+  }
+}
+`
+
+El id permite hacer una trazabilidad de la operación, mientras que el status indica el estado de la operación.
+
+NSO está funcionando en formato síncrono, es decir que las colas siguen el estilo FIFO (first in, first out) 
+para un mismo dispositivo; además no se devuelve una respuesta hasta que termine la operación en concreto. 
+En caso de error en una de las operaciones se continúa con la siguiente en la cola.
+
+---
+# Errores
+
+---
+
+<%= partial "./api/v1/residenciales/residenciales.html.md.erb" %>

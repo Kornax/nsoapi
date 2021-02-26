@@ -3,21 +3,22 @@
 Colección de métodos para el aprovisionamiento de Servicios Residenciales
 
 
-## Alta HSI
+## <span style="background-color:Orange; color:white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Alta HSI
 
 Crea un servicio HSI identificado por su código. 
 Cada servicio HSI puede configurarse en más de una ONU con características distintas (tipo, velocidades, etc). 
 
 ### **HTTP Request**
 
-`POST http://<NSO_IP>:<NSO_PORT>/restconf/data/services/pon/services?no-out-of-sync-check`
+`/data/services/pon/services`
 
 > **Ejemplo de Consulta**
 
 ```shell
-curl --location --request POST 'http://10.64.17.44:32792/restconf/data/services/pon/services?no-out-of-sync-check' \
+curl --location --request POST 'http://10.64.17.44:32792/restconf/data/services/pon/services?no-out-of-sync-check&wait-device=CEYD-01Z' \
 --header 'Content-Type: application/yang-data+json' \
 --header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4=' \
 --data-raw '{
     "antel-pon-hsi:hsi": {
         "code": "JL6101",
@@ -30,10 +31,9 @@ curl --location --request POST 'http://10.64.17.44:32792/restconf/data/services/
             "port": "1",
             "onuid": "30",
             "service-type": "router",
-            "wifi-mesh": "true",
             "traffic-profile": {
-                "downstream": "DOWN120MBPS",
-                "upstream": "UP12MBPS"
+                "downstream": "DOWN100MBPS",
+                "upstream": "UPFXS"
             }
         }
     }
@@ -43,9 +43,9 @@ curl --location --request POST 'http://10.64.17.44:32792/restconf/data/services/
 ```python
 import requests
 
-url = "http://10.64.17.44:32792/restconf/data/services/pon/services?no-out-of-sync-check"
+url = "http://10.64.17.44:32792/restconf/data/services/pon/services?no-out-of-sync-check&wait-device=CEYD-01Z"
 
-payload="{\r\n    \"antel-pon-hsi:hsi\": {\r\n        \"code\": \"JL6101\",\r\n        \"customer\": \"PEREIRA ASIS\",\r\n        \"onus\": {\r\n            \"olt\": \"CEYD-01Z\",\r\n            \"rack\": \"1\",\r\n            \"shelf\": \"1\",\r\n            \"slot\": \"3\",\r\n            \"port\": \"1\",\r\n            \"onuid\": \"30\",\r\n            \"service-type\": \"bridge\",\r\n            \"wifi-mesh\": \"true\",\r\n            \"traffic-profile\": {\r\n                \"downstream\": \"DOWN100MBPS\",\r\n                \"upstream\": \"UPFXS\"\r\n            }\r\n        }\r\n    }\r\n}"
+payload="{\r\n    \"antel-pon-hsi:hsi\": {\r\n        \"code\": \"JL6101\",\r\n        \"customer\": \"PEREIRA ASIS\",\r\n        \"onus\": {\r\n            \"olt\": \"CEYD-01Z\",\r\n            \"rack\": \"1\",\r\n            \"shelf\": \"1\",\r\n            \"slot\": \"3\",\r\n            \"port\": \"1\",\r\n            \"onuid\": \"30\",\r\n            \"service-type\": \"router\",\r\n            \"traffic-profile\": {\r\n                \"downstream\": \"DOWN100MBPS\",\r\n                \"upstream\": \"UPFXS\"\r\n            }\r\n        }\r\n    }\r\n}"
 headers = {
   'Content-Type': 'application/yang-data+json',
   'Accept': 'application/yang-data+json',
@@ -88,6 +88,17 @@ print(response.text)
 }
 ```
 
+### **Parámetros**
+| Key                    | Value            |
+|------------------------|------------------|
+| `no-out-of-sync-check` |                  |
+| `wait-device`          | Nombre de la OLT |
+
+### **Encabezados**
+
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`  
+
 ### **Atributos**
 
 | Atributo        | Mandatorio | Tipo                          | Descripción                                                                                                                     |
@@ -106,5 +117,3 @@ print(response.text)
 | traffic-profile |            | Contenedor                    | Perfiles de velocidad del servicio                                                                                              |
 | downstream      | Si         | String                        | Perfil de velocidad de bajada. Restringido a los perfiles conocidos.                                                            |
 | upstream        | Si         | String                        | Perfil de velocidad de subida. Restringido a los perfiles conocidos.                                                            |
-
-
