@@ -1,0 +1,616 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>NSO GPON RESTCONF API</title>
+
+    <style media="screen">
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cpf {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s, .highlight .sa, .highlight .dl {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf, .highlight .fm {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv, .highlight .vm {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #f92672;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <style media="print">
+      * {
+        -webkit-transition:none!important;
+        transition:none!important;
+      }
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #586e75;
+}
+.highlight .err {
+  color: #002b36;
+  background-color: #dc322f;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
+  color: #657b83;
+}
+.highlight .cp {
+  color: #b58900;
+}
+.highlight .nt {
+  color: #b58900;
+}
+.highlight .o, .highlight .ow {
+  color: #93a1a1;
+}
+.highlight .p, .highlight .pi {
+  color: #93a1a1;
+}
+.highlight .gi {
+  color: #859900;
+}
+.highlight .gd {
+  color: #dc322f;
+}
+.highlight .gh {
+  color: #268bd2;
+  background-color: #002b36;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #6c71c4;
+}
+.highlight .kc {
+  color: #cb4b16;
+}
+.highlight .kt {
+  color: #cb4b16;
+}
+.highlight .kd {
+  color: #cb4b16;
+}
+.highlight .s, .highlight .sa, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #859900;
+}
+.highlight .sr {
+  color: #2aa198;
+}
+.highlight .si {
+  color: #d33682;
+}
+.highlight .se {
+  color: #d33682;
+}
+.highlight .nn {
+  color: #b58900;
+}
+.highlight .nc {
+  color: #b58900;
+}
+.highlight .no {
+  color: #b58900;
+}
+.highlight .na {
+  color: #268bd2;
+}
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+  color: #859900;
+}
+.highlight .ss {
+  color: #859900;
+}
+    </style>
+    <link href="../stylesheets/screen-c9d8fa83.css" rel="stylesheet" media="screen" />
+    <link href="../stylesheets/print-953e3353.css" rel="stylesheet" media="print" />
+      <script src="../javascripts/all-e033bdd3.js"></script>
+
+  </head>
+
+  <body class="v1 v1_index" data-languages="[&quot;shell&quot;,&quot;python&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="../images/navbar-cad8cdcb.png" alt="" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <img src="../images/logo-d8761c60.png" class="logo" alt="" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
+              <a href="#" data-language-name="python">python</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <ul id="toc" class="toc-list-h1">
+          <li>
+            <a href="#introduccion" class="toc-h1 toc-link" data-title="Introducción">Introducción</a>
+          </li>
+          <li>
+            <a href="#seguimiento-de-cambios" class="toc-h1 toc-link" data-title="Seguimiento de cambios">Seguimiento de cambios</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#v1-0-26-02-2021" class="toc-h2 toc-link" data-title="v1.0 - 26/02/2021">v1.0 - 26/02/2021</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#acceso-y-autenticacion" class="toc-h1 toc-link" data-title="Acceso y Autenticación">Acceso y Autenticación</a>
+          </li>
+          <li>
+            <a href="#parametros-generales" class="toc-h1 toc-link" data-title="Parámetros generales">Parámetros generales</a>
+          </li>
+          <li>
+            <a href="#formato-de-respuesta" class="toc-h1 toc-link" data-title="Formato de respuesta">Formato de respuesta</a>
+          </li>
+          <li>
+            <a href="#errores" class="toc-h1 toc-link" data-title="Errores">Errores</a>
+          </li>
+          <li>
+            <a href="#servicios-residenciales" class="toc-h1 toc-link" data-title="Servicios Residenciales">Servicios Residenciales</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#post-alta-hsi" class="toc-h2 toc-link" data-title="POST - Alta HSI"><span style="background-color:Orange; color:white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Alta HSI</a>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+        <ul class="toc-footer">
+            <li><a href='https://corp.antel.com.uy/wiki/display/NSO'>Wiki del Proyecto</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <p><hr>
+<h1 id='introduccion'>Introducción</h1>
+<p>La API RESTCONF de NSO es muy similar a cualquier tipo de API Web que cumple con los principios de arquitectura REST. 
+Permite las operaciones típicas POST, PUT, PATCH, GET, DEL, etc. Acepta la información por medio de HTTP en los formatos tradicionales: JSON u XML.
+Puede ser invocada mediante el comando curl en una cli, mediante POSTMAN, Python, PHP u otro tipo de lenguaje que maneje interfases REST.</p></p>
+
+<p>En este documento se detalla como es la API RESTCONF de NSO, para los métodos de aprovisionamiento, configuración y 
+consulta de servicios sobre la red de acceso GPON.</p>
+
+<p>Por más información dirigirse a la wiki: <a href='https://corp.antel.com.uy/wiki/display/NSO'>Wiki-NSO-Antel</a></p>
+
+<p><hr>
+<h1 id='seguimiento-de-cambios'>Seguimiento de cambios</h1><h2 id='v1-0-26-02-2021'>v1.0 - 26/02/2021</h2>
+<p>Se crea la documentación</p></p>
+
+<p><hr>
+<h1 id='acceso-y-autenticacion'>Acceso y Autenticación</h1>
+<p>El acceso es con una autenticación básica de usuario y contraseña.</p></p>
+
+<p>Solicitar a NsoSoporte@mail.Antel.com.uy tanto las credenciales para el acceso, 
+como la dirección IP y puerto para poder acceder a la API.</p>
+
+<p><hr>
+<h1 id='parametros-generales'>Parámetros generales</h1>
+<p>La URL principal para el acceso es la siguiente:</p></p>
+
+<p><code>http://&lt;IP-NSO&gt;:&lt;PUERTO-NSO&gt;/restconf/</code></p>
+
+<p>Donde <code>&lt;IP-NSO&gt;</code> y <code>&lt;PUERTO-NSO&gt;</code> son la dirección IPv4 y puerto TCP del servidor NSO respectivamente.</p>
+
+<p><hr>
+<h1 id='formato-de-respuesta'>Formato de respuesta</h1>
+<p>Todos los métodos aceptan el encabezado: </p></p>
+
+<p><code>Accept: application/yang-data+json</code> o <code>Accept: application/yang-data+xml</code></p>
+
+<p>Para recibir las respuestas en los formatos JSON o XML.</p>
+
+<p>NSO cuenta con una sistema de commit queues o colas de commit. Esto permite encolar solicitudes sobre un mismo equipo de red.
+Las operaciones que sean aceptadas en la cola (sin errores de formato) van a obtener una respuesta del tipo:</p>
+
+<p><code>
+{
+  &quot;commit-queue&quot;: {
+    &quot;id&quot;: &quot;1614016683699&quot;,
+    &quot;status&quot;: &quot;completed&quot;
+  }
+}
+</code></p>
+
+<p>El id permite hacer una trazabilidad de la operación, mientras que el status indica el estado de la operación.</p>
+
+<p>NSO está funcionando en formato síncrono, es decir que las colas siguen el estilo FIFO (first in, first out) 
+para un mismo dispositivo; además no se devuelve una respuesta hasta que termine la operación en concreto. 
+En caso de error en una de las operaciones se continúa con la siguiente en la cola.</p>
+
+<p><hr>
+<h1 id='errores'>Errores</h1>
+<hr></p>
+
+<h1 id='servicios-residenciales'>Servicios Residenciales</h1>
+
+<p>Colección de métodos para el aprovisionamiento de Servicios Residenciales</p>
+
+<h2 id='post-alta-hsi'><span style="background-color:Orange; color:white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Alta HSI</h2>
+
+<p>Crea un servicio HSI identificado por su código. 
+Cada servicio HSI puede configurarse en más de una ONU con características distintas (tipo, velocidades, etc). </p>
+
+<h3 id='http-request'><strong>HTTP Request</strong></h3>
+
+<p><code>/data/services/pon/services</code></p>
+
+<blockquote>
+<p><strong>Ejemplo de Consulta</strong></p>
+</blockquote>
+
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">--location</span> <span class="nt">--request</span> POST <span class="s1">'http://10.64.17.44:32792/restconf/data/services/pon/services?no-out-of-sync-check&amp;wait-device=CEYD-01Z'</span> <span class="se">\</span>
+<span class="nt">--header</span> <span class="s1">'Content-Type: application/yang-data+json'</span> <span class="se">\</span>
+<span class="nt">--header</span> <span class="s1">'Accept: application/yang-data+json'</span> <span class="se">\</span>
+<span class="nt">--header</span> <span class="s1">'Authorization: Basic YWRtaW46YWRtaW4='</span> <span class="se">\</span>
+<span class="nt">--data-raw</span> <span class="s1">'{
+    "antel-pon-hsi:hsi": {
+        "code": "JL6101",
+        "customer": "PEREIRA ASIS",
+        "onus": {
+            "olt": "CEYD-01Z",
+            "rack": "1",
+            "shelf": "1",
+            "slot": "3",
+            "port": "1",
+            "onuid": "30",
+            "service-type": "router",
+            "traffic-profile": {
+                "downstream": "DOWN100MBPS",
+                "upstream": "UPFXS"
+            }
+        }
+    }
+}'</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"http://10.64.17.44:32792/restconf/data/services/pon/services?no-out-of-sync-check&amp;wait-device=CEYD-01Z"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="s">"{</span><span class="se">\r\n</span><span class="s">    </span><span class="se">\"</span><span class="s">antel-pon-hsi:hsi</span><span class="se">\"</span><span class="s">: {</span><span class="se">\r\n</span><span class="s">        </span><span class="se">\"</span><span class="s">code</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">JL6101</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">        </span><span class="se">\"</span><span class="s">customer</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">PEREIRA ASIS</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">        </span><span class="se">\"</span><span class="s">onus</span><span class="se">\"</span><span class="s">: {</span><span class="se">\r\n</span><span class="s">            </span><span class="se">\"</span><span class="s">olt</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">CEYD-01Z</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">            </span><span class="se">\"</span><span class="s">rack</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">1</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">            </span><span class="se">\"</span><span class="s">shelf</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">1</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">            </span><span class="se">\"</span><span class="s">slot</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">3</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">            </span><span class="se">\"</span><span class="s">port</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">1</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">            </span><span class="se">\"</span><span class="s">onuid</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">30</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">            </span><span class="se">\"</span><span class="s">service-type</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">router</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">            </span><span class="se">\"</span><span class="s">traffic-profile</span><span class="se">\"</span><span class="s">: {</span><span class="se">\r\n</span><span class="s">                </span><span class="se">\"</span><span class="s">downstream</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">DOWN100MBPS</span><span class="se">\"</span><span class="s">,</span><span class="se">\r\n</span><span class="s">                </span><span class="se">\"</span><span class="s">upstream</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">UPFXS</span><span class="se">\"\r\n</span><span class="s">            }</span><span class="se">\r\n</span><span class="s">        }</span><span class="se">\r\n</span><span class="s">    }</span><span class="se">\r\n</span><span class="s">}"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/yang-data+json'</span><span class="p">,</span>
+  <span class="s">'Accept'</span><span class="p">:</span> <span class="s">'application/yang-data+json'</span><span class="p">,</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'Basic YWRtaW46YWRtaW4='</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>Posibles salidas</strong></p>
+
+<p>Alta creada correctamente - 201 Created</p>
+</blockquote>
+
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"commit-queue"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1614016683699"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"completed"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+
+<blockquote>
+<p>Error por ONU con servicio HSI ya configurado - 400 Bad Request</p>
+</blockquote>
+
+<p><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">&quot;errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">&quot;error-message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Python cb_create error. La ONU ya tiene un servicio HSI configurado&quot;</span><span class="p">,</span><span class="w">
+        </span><span class="nl">&quot;error-path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/tailf-ncs:services/antel-pon:pon/services/antel-pon-hsi:hsi=JL6101&quot;</span><span class="p">,</span><span class="w">
+        </span><span class="nl">&quot;error-tag&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;malformed-message&quot;</span><span class="p">,</span><span class="w">
+        </span><span class="nl">&quot;error-type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;application&quot;</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='parametros'><strong>Parámetros</strong></h3>
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>no-out-of-sync-check</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wait-device</code></td>
+<td>Nombre de la OLT</td>
+</tr>
+</tbody></table>
+<h3 id='encabezados'><strong>Encabezados</strong></h3>
+<p><code>Content-Type: application/yang-data+json</code><br>
+<code>Accept: application/yang-data+json</code>  </p>
+
+<h3 id='atributos'><strong>Atributos</strong></h3>
+
+<p><table><thead>
+<tr>
+<th>Atributo</th>
+<th>Mandatorio</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>Si</td>
+<td>String</td>
+<td>Código que identifica al servicio HSI.</td>
+</tr>
+<tr>
+<td>customer</td>
+<td>No</td>
+<td>String</td>
+<td>Apellidos del cliente separados por espacio.</td>
+</tr>
+<tr>
+<td>onus</td>
+<td></td>
+<td>Lista</td>
+<td>Lista de onus donde se va a configurar el/los servicios(puede ser más de una). Contiene los elementos descriptos a continuación</td>
+</tr>
+<tr>
+<td>olt</td>
+<td>Si</td>
+<td>String</td>
+<td>Nombre de la OLT. Restringido a las OLTs desplegadas.</td>
+</tr>
+<tr>
+<td>rack</td>
+<td>Si</td>
+<td>Int</td>
+<td>Número de rack.</td>
+</tr>
+<tr>
+<td>shelf</td>
+<td>Si</td>
+<td>Int</td>
+<td>Número de shelf.</td>
+</tr>
+<tr>
+<td>slot</td>
+<td>Si</td>
+<td>Int</td>
+<td>Número de slot.</td>
+</tr>
+<tr>
+<td>port</td>
+<td>Si</td>
+<td>Int</td>
+<td>Número de puerto</td>
+</tr>
+<tr>
+<td>onuid</td>
+<td>Si</td>
+<td>Int</td>
+<td>ID de la ONU.</td>
+</tr>
+<tr>
+<td>service-type</td>
+<td>Si</td>
+<td>Enum: &quot;bridge&quot;       &quot;router&quot;</td>
+<td>Tipo de servicio HSI.</td>
+</tr>
+<tr>
+<td>wifi-mesh</td>
+<td>No</td>
+<td>Boolean Default false</td>
+<td>Indica si el servicio tiene wifi-mesh. Solo es posible configurarlo en &quot;true&quot; cuando el service-type es &quot;router&quot;</td>
+</tr>
+<tr>
+<td>traffic-profile</td>
+<td></td>
+<td>Contenedor</td>
+<td>Perfiles de velocidad del servicio</td>
+</tr>
+<tr>
+<td>downstream</td>
+<td>Si</td>
+<td>String</td>
+<td>Perfil de velocidad de bajada. Restringido a los perfiles conocidos.</td>
+</tr>
+<tr>
+<td>upstream</td>
+<td>Si</td>
+<td>String</td>
+<td>Perfil de velocidad de subida. Restringido a los perfiles conocidos.</td>
+</tr>
+</tbody></table></p></p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
+                <a href="#" data-language-name="python">python</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
