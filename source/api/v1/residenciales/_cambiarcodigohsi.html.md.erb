@@ -1,0 +1,111 @@
+## <span style="background-color:Orange; color: white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Cambiar código HSI
+
+> **Ejemplo**
+
+> Request
+
+```shell
+curl --location --request POST 'http://10.64.17.44:32729/restconf/data/services/pon/actions/change-service-code' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--data-raw '{
+    "input": {
+        "service-type": "hsi",
+        "old-code": "JL6101",
+        "new-code": "KR5202",
+        "new-customer": "PEREZ GONZALEZ"
+    }
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32729/restconf/data/services/pon/actions/change-service-code"
+
+payload="{\r\n    \"input\": {\r\n        \"service-type\": \"hsi\",\r\n        \"old-code\": \"JL6101\",\r\n        \"new-code\": \"KR5202\",\r\n        \"new-customer\": \"PEREZ GONZALEZ\"\r\n    }\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+```
+
+> **Posibles respuestas**
+
+> Operación Correcta
+
+```json
+{
+    "antel-pon-change-service-code:output": {
+        "message": "Operacion correcta"
+    }
+}
+```
+
+>  Mal el tipo de servicio
+
+```json
+{
+    "antel-pon-change-service-code:output": {
+        "message": "El tipo de servicio no es correcto"
+    }
+}
+```
+
+>  Código de servicio no existente
+
+```json
+{
+    "antel-pon-change-service-code:output": {
+        "message": "El servicio JL6101 no existe"
+    }
+}
+```
+
+>  Nuevo código de servicio ya existente
+
+```json
+{
+    "antel-pon-change-service-code:output": {
+        "message": "El servicio KR5202 ya existe"
+    }
+}
+```
+
+Acción que permite modifica el códico de indentificación de un servicio 
+(borra el servicio viejo y lo vuelve a crear con los mismos parámetros pero con un nuevo código identificador).
+
+### **HTTP Request**
+
+`/data/services/pon/actions/change-service-code`
+
+### **Parámetros**
+Vacío
+
+### **Encabezados**
+
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`  
+
+### **Atributos**
+
+| Atributo       | Mandatorio | Tipo                          | Descripción                                                   |
+|----------------|------------|-------------------------------|---------------------------------------------------------------|
+| `service-type` | Si         | Enum: "hsi"/"voip"/"business" | Tipo de servicio al cual cambiar el código. En este caso hsi. |
+| `old-code`     | Si         | string                        | Código que identifica el servicio HSI al cual modificar.      |
+| `new-code`     | Si         | string                        | Nuevo código de identificación del servicio.                  |
+| `new-customer` | No         | string                        | atributo adicional para modificar también el customer.        |
+
+### **Respuesta**
+Parámetro "message" con las siguientes opciones de mensaje:
+
+| Mensaje                              | Descripción                                                                                |
+|--------------------------------------|--------------------------------------------------------------------------------------------|
+| `Operación Correcta`                 | La operación de cambio de código fue ejecutada correctamente.                              |
+| `El tipo de servicio no es correcto` | Cuando se intentó modificar un tipo de servicio que no es el correcto.                     |
+| `El servicio <old-code> no existe`   | Cuando el identificador de servicio ingresado no existe.                                   |
+| `El servicio <new-code> ya existe`   | Cuando el nuevo identificador de servicio ingresado entra en conflicto con otro existente. |

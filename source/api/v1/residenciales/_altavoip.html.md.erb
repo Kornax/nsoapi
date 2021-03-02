@@ -1,0 +1,123 @@
+## <span style="background-color:Orange; color: white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Alta VoIP
+
+> **Ejemplo**
+
+```shell
+curl --location --request POST 'http://10.64.17.44:32772/restconf/data/services/pon/services?no-out-of-sync-check&wait-device=CEYD-01Z' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4=' \
+--data-raw '{
+    "antel-pon-voip:voip": {
+        "code": "26138349",
+        "customer": "PEREIRA ASIS",
+        "onus": {
+            "olt": "CEYD-01Z",
+            "rack": "1",
+            "shelf": "1",
+            "slot": "3",
+            "port": "1",
+            "onuid": "30",
+            "traffic-profile": {
+                "downstream": "DOWNFXS",
+                "upstream": "UPFXS"
+            },
+            "port-fxs": [
+                {
+                    "lan-card": "0",
+                    "port": "1",
+                    "user-name": "26138349",
+                    "password": "12345"
+                }
+            ]
+        }
+    }
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/services?no-out-of-sync-check&wait-device=CEYD-01Z"
+
+payload="{\r\n    \"antel-pon-voip:voip\": {\r\n        \"code\": \"26138349\",\r\n        \"customer\": \"PEREIRA ASIS\",\r\n        \"onus\": {\r\n            \"olt\": \"CEYD-01Z\",\r\n            \"rack\": \"1\",\r\n            \"shelf\": \"1\",\r\n            \"slot\": \"3\",\r\n            \"port\": \"1\",\r\n            \"onuid\": \"30\",\r\n            \"traffic-profile\": {\r\n                \"downstream\": \"DOWNFXS\",\r\n                \"upstream\": \"UPFXS\"\r\n            },\r\n            \"port-fxs\": [\r\n                {\r\n                    \"lan-card\": \"0\",\r\n                    \"port\": \"1\",\r\n                    \"user-name\": \"26138349\",\r\n                    \"password\": \"12345\"\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+> **Posibles salidas**
+
+> Alta creada correctamente - 201 Created
+
+```json
+{
+    "commit-queue": {
+        "id": "1614078791766",
+        "status": "completed"
+    }
+}
+```
+
+> Puerto en uso - 400 Bad Request
+
+```json
+{
+    "errors": {
+        "error": [
+            {
+                "error-message": "Python cb_create error. Puerto FXS en uso",
+                "error-path": "/tailf-ncs:services/antel-pon:pon/services/antel-pon-voip:voip=26138349",
+                "error-tag": "malformed-message",
+                "error-type": "application"
+            }
+        ]
+    }
+}
+```
+
+Crea un servicio VoIP identificado por su código. 
+Cada servicio VoIP puede configurarse en más de una ONU con características distintas. 
+
+### **HTTP Request**
+
+`/data/services/pon/services?no-out-of-sync-check&wait-device=<olt>`
+
+### **Parámetros**
+| Key                    | Value            |
+|------------------------|------------------|
+| `no-out-of-sync-check` |                  |
+| `wait-device`          | Nombre de la OLT |
+
+
+### **Encabezados**
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`   
+
+### **Atributos**
+| Atributo          | Mandatorio | Tipo                          | Descripción                                                                                                                     |
+|-------------------|------------|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `code`            | Si         | String                        | Código que identifica al servicio VoIP.                                                                                         |
+| `customer`        | No         | String                        | Apellidos del cliente separados por espacio.                                                                                    |
+| `onus`            |            | Lista                         | Lista de onus donde se va a configurar el/los servicios(puede ser más de una). Contiene los elementos descriptos a continuación |
+| `olt`             | Si         | String                        | Nombre de la OLT. Restringido a las OLTs desplegadas.                                                                           |
+| `rack`            | Si         | Int                           | Número de rack.                                                                                                                 |
+| `shelf`           | Si         | Int                           | Número de shelf.                                                                                                                |
+| `slot`            | Si         | Int                           | Número de slot.                                                                                                                 |
+| `port`            | Si         | Int                           | Número de puerto.                                                                                                               |
+| `onuid`           | Si         | Int                           | ID de la ONU.                                                                                                                   |
+| `traffic-profile` |            | Contenedor                    | Perfiles de velocidad del servicio                                                                                              |
+| `downstream`      | Si         | String                        | Perfil de velocidad de bajada. Restringido a los perfiles conocidos.                                                            |
+| `upstream`        | Si         | String                        | Perfil de velocidad de subida. Restringido a los perfiles conocidos.                                                            |
+| `port-fxs`        |            | Lista                         | Lista de puertos fxs del servicio.                                                                                              |
+| `lan-car`         | Si         | Int                           | Tarjeta lan del puerto.                                                                                                         |
+| `port`            | Si         | Int                           | Identificador del puerto.                                                                                                       |
+| `user-name`       | Si         | String                        | Nombre de usuario del puerto.                                                                                                   |
+| `password`        | Si         | String                        | Contraseña del puerto.                                                                                                          |

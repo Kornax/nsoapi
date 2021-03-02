@@ -1,0 +1,46 @@
+## <span style="background-color:#d22d2d; color: white; border-radius: 4px; font-size: 16px; text-align: center;">DELETE</span> - Baja VoIP
+
+> **Ejemplo**
+
+```shell
+curl --location --request DELETE 'http://10.64.17.44:32772/restconf/data/services/pon/services/voip=26138349?no-out-of-sync-check&wait-device=CEYD-01Z' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4=' \
+--data-raw ''
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/services/voip=26138349?no-out-of-sync-check&wait-device=CEYD-01Z"
+
+payload={}
+headers = {
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("DELETE", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+
+Da la baja del servicio VoIP especificado.
+
+### **HTTP Request**
+
+`data/services/pon/services/´voip=<voip_code>?no-out-of-sync-check&wait-device=<olt>`
+
+### **Parámetros**
+| Key           | Value                                                 |
+|---------------|-------------------------------------------------------|
+| `voip`        | Código de identificación del servicio VoIP a verificar|
+| `wait-device` | Nombre de la OLT                                      |
+
+### **Encabezados**
+`Accept: application/yang-data+json`   
+
+### **Atributos**
+Vacío

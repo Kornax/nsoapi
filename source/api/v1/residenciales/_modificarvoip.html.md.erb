@@ -1,0 +1,69 @@
+## <span style="background-color:Grey; color: white; border-radius: 4px; font-size: 16px; text-align: center;">PATCH</span> - Modificar VoIP
+
+> **Ejemplo de cambio de password**
+
+```shell
+curl --location --request PATCH 'http://10.64.17.44:32772/restconf/data/services/pon/services/voip?no-out-of-sync-check&wait-device=CEYD-01Z' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--data-raw '{
+    "antel-pon-voip:voip": {
+        "code": "26138349",
+        "customer": "PEREIRA ASIS",
+        "onus": {
+            "olt": "CEYD-01Z",
+            "rack": "1",
+            "shelf": "1",
+            "slot": "3",
+            "port": "1",
+            "onuid": "30",
+            "port-fxs": [
+                {
+                    "lan-card": "0",
+                    "port": "1",
+                    "password": "54321"
+                }
+            ]
+        }
+    }
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/services/voip?no-out-of-sync-check&wait-device=CEYD-01Z"
+
+payload="{\r\n    \"antel-pon-voip:voip\": {\r\n        \"code\": \"26138349\",\r\n        \"customer\": \"PEREIRA ASIS\",\r\n        \"onus\": {\r\n            \"olt\": \"CEYD-01Z\",\r\n            \"rack\": \"1\",\r\n            \"shelf\": \"1\",\r\n            \"slot\": \"3\",\r\n            \"port\": \"1\",\r\n            \"onuid\": \"30\",\r\n            \"port-fxs\": [\r\n                {\r\n                    \"lan-card\": \"0\",\r\n                    \"port\": \"1\",\r\n                    \"password\": \"54321\"\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json'
+}
+
+response = requests.request("PATCH", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+Modifica alguno de los parámetros de un servicio VoIP existente. 
+El código de identificación no puede ser cambiado con éste método (Ver Cambiar-código-VoIP). 
+También puede agregar una configuración nueva en caso de agregar una nueva ONU a la lista del servicio 
+o crear un puerto FXS nuevo en el servicio voip ya existente.
+
+### **HTTP Request**
+
+`data/services/pon/services/voip?no-out-of-sync-check&wait-device=<olt>`
+
+### **Parámetros**
+| Key                    | Value            |
+|------------------------|------------------|
+| `no-out-of-sync-check` |                  |
+| `wait-device`          | Nombre de la OLT |
+
+### **Encabezados**
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`   
+
+### **Atributos**
+Mismos atributos que para el alta VoIP. No es nesesario enviar todos, solo los identificadores de servicio y ONU y los parámetros que se requiera modificar.

@@ -1,0 +1,78 @@
+## <span style="background-color:Orange; color:white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Alta ONU
+
+> **Ejemplo - Alta onu por password**
+
+```shell
+curl --location --request POST 'http://10.64.17.44:32772/restconf/data/services/pon/infraestructure?no-out-of-sync-check&wait-device=CEYD-01Z' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4=' \
+--data-raw '{
+ "antel-pon-onu:onus": [ {
+    "olt": "CEYD-01Z",
+    "rack": "1",
+    "shelf": "1",
+    "slot": "3",
+    "port": "1",
+    "onuid": "30",
+    "onu-type": "ZTE-F670v1",
+    "technology": "GPON",
+    "slot-type": "GPON",
+    "autentication-mode": "password",
+    "password": "onu_30"
+  }  ]
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/infraestructure?no-out-of-sync-check&wait-device=CEYD-01Z"
+
+payload="{\r\n \"antel-pon-onu:onus\": [ {\r\n    \"olt\": \"CEYD-01Z\",\r\n    \"rack\": \"1\",\r\n    \"shelf\": \"1\",\r\n    \"slot\": \"3\",\r\n    \"port\": \"1\",\r\n    \"onuid\": \"30\",\r\n    \"onu-type\": \"ZTE-F670v1\",\r\n    \"technology\": \"GPON\",\r\n    \"slot-type\": \"GPON\",\r\n    \"autentication-mode\": \"password\",\r\n    \"password\": \"onu_30\"\r\n  }  ]\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+Método para aprovisionar una ONU. El método de autenticación puede ser password o serial-number. 
+En caso de parámetros opcionales no es necesarios agregarlos al cuerpo.
+
+### **HTTP Request**
+
+`/data/services/pon/infraestructure?no-out-of-sync-check&wait-device=<olt>`
+
+### **Parámetros**
+| Key                    | Value            |
+|------------------------|------------------|
+| `no-out-of-sync-check` |                  |
+| `wait-device`          | Nombre de la OLT |
+
+### **Encabezados**
+
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`  
+
+### **Atributos**
+
+| Atributo             | Mandatorio | Tipo                               | Descripción                                                                                                                                                       |
+|----------------------|------------|------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `olt`                | Si         | String                             | Nombre de la OLT. Restringido a las OLTs desplegadas.                                                                                                             |
+| `rack`               | Si         | Int                                | Número de rack.                                                                                                                                                   |
+| `shelf`              | Si         | Int                                | Número de shelf.                                                                                                                                                  |
+| `slot`               | Si         | Int                                | Número de slot.                                                                                                                                                   |
+| `port`               | Si         | Int                                | Número de puerto.                                                                                                                                                 |
+| `onuid`              | Si         | Int                                | ID de la ONU.                                                                                                                                                     |
+| `onu-type`           | No         | String                             | Tipo de ONU a configurar. Restringido a los tipos conocidos. En caso de omitirse, se da el alta con el onu-type por defecto para dicho modelo de OLT (ver anexo). |
+| `technology`         | Si         | Enum: "GPON" o "XGPON"             | Tecnología de la ONU.                                                                                                                                             |
+| `slot-type`          | Si         | Enum: "GPON" o "Combo"             | Tipo de placa.                                                                                                                                                    |
+| `autentication-mode` | Si         | Enum: "password" o "serial-number" | Tipo de autenticación.                                                                                                                                            |
+| `password`           |            | String                             | Contraseña de la ONU. Parámetro mandatorio en caso de que autentication-mode sea "password"                                                                       |
+| `serial-number`      |            | String                             | Número de serie de la onu. Parámetro mandatorio en caso de que autentication-mode sea "serial-number".                                                            |

@@ -1,0 +1,59 @@
+## <span style="background-color:Orange; color: white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Chequeo de sincronismo VoIP
+
+> **Ejemplo**
+
+```shell
+curl --location --request POST 'http://10.64.17.44:32772/restconf/data/services/pon/services/voip=26138349/check-sync' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4='
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/services/voip=26138349/check-sync"
+
+payload={}
+headers = {
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+> **Respuesta**
+
+```json
+{
+    "antel-pon-voip:output": {
+        "in-sync": true
+    }
+}
+```
+
+Acción que verifica si el servicio VoIP está en sincronismo, 
+es decir si la OLT tiene configurado lo que el Master (NSO) tiene guardado en su DB como configuración actual.
+
+### **HTTP Request**
+
+`data/services/pon/services/voip=<voip_code>/check-sync`
+
+### **Parámetros**
+| Key        | Value                                                 |
+|------------|-------------------------------------------------------|
+| `voip`     | Código de identificación del servicio VoIP a verificar|
+
+### **Encabezados**
+
+`Accept: application/yang-data+json`  
+
+### **Atributos**
+Vacío
+
+### **Respuesta**
+Parámetro booleano "in-sync" que vale True cuando el servicio está en sincronismo y False cuando no.
+
