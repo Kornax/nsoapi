@@ -1,0 +1,97 @@
+## <span style="background-color:Orange; color: white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Consulta ONU
+
+> **Ejemplo**
+
+```shell
+curl --location --request POST 'http://10.64.17.44:32772/restconf/operations/services/pon/queries/consultaONU' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4=' \
+--data-raw '{
+    "olt": "CEYD-01Z",
+    "rack": "1",
+    "shelf": "1",
+    "slot": "3",
+    "port": "1",
+    "onuid": "30",
+    "Age": 0,
+    "parametro": [
+      {"id":"RUNSTAT"},
+      {"id":"PHASE-STATE"}
+    ]
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/operations/services/pon/queries/consultaONU"
+
+payload="{\r\n    \"olt\": \"CEYD-01Z\",\r\n    \"rack\": \"1\",\r\n    \"shelf\": \"1\",\r\n    \"slot\": \"3\",\r\n    \"port\": \"1\",\r\n    \"onuid\": \"30\",\r\n    \"Age\": 0,\r\n    \"parametro\": [\r\n      {\"id\":\"RUNSTAT\"},\r\n      {\"id\":\"PHASE-STATE\"}\r\n    ]\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+> **Respuesta**
+
+```json
+{
+    "consultas:output": {
+        "parametro": [
+            {
+                "id": "RUNSTAT",
+                "valor": "ready",
+                "Age": 1
+            },
+            {
+                "id": "PHASE-STATE",
+                "valor": "OffLine",
+                "Age": 0
+            }
+        ],
+        "result-status": {
+            "code": 200,
+            "description": "OK"
+        }
+    }
+}
+```
+
+Método que consulta sobre parámetros específicos en tiempo real de la ONU. 
+
+### **HTTP Request**
+
+`/operations/services/pon/queries/consultaONU`
+
+### **Parámetros**
+Vacío
+
+### **Encabezados**
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`   
+
+### **Atributos**
+| Atributo             | Mandatorio | Tipo                               | Descripción                                                                                                                                                       |
+|----------------------|------------|------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `olt`                | Si         | String                             | Nombre de la OLT. Restringido a las OLTs desplegadas.                                                                                                             |
+| `rack`               | Si         | Int                                | Número de rack.                                                                                                                                                   |
+| `shelf`              | Si         | Int                                | Número de shelf.                                                                                                                                                  |
+| `slot`               | Si         | Int                                | Número de slot.                                                                                                                                                   |
+| `port`               | Si         | Int                                | Número de puerto.                                                                                                                                                 |
+| `onuid`              | Si         | Int                                | ID de la ONU.                                                                                                                                                     |
+| `Age`                | No         | Int                                | Tiempo de vida en segundos de la consulta (Por defecto vale "0"). Si el Age es menor al tiempo entre la última vez que se consultó dicho parámetro y el tiempo actual, la consulta se realiza en el equipo final (OLT), en caso contrario se toma de la DB de NSO desde la última consulta.                  |
+| `parametro`          |            | Lista                              | Lista de parámetros a consultar.                                                                                                                                  |
+| `id`                 | Si         | String                             | Nombre del parámetro a consultar. Ver<a href="./NSO-PON-RESTCONF-API#lista-de-parametros-para-la-consulta-onu"> anexo </a>por la lista completa.                                 |
+
+
+
+### **Respuesta**
+JSON/XML con una lista de los parámetros consultados y el valor de cada uno de ellos.
