@@ -1,0 +1,80 @@
+## <span style="background-color:Orange; color: white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Chequeo de sincronismo ONU
+
+> **Ejemplo**
+
+```shell
+curl --location --request POST 'http://10.64.17.44:32772/restconf/data/services/pon/infraestructure/onus=CEYD-01Z,1,1,3,1,30/compare-config' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4=' \
+--data-raw ''
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/infraestructure/onus=CEYD-01Z,1,1,3,1,30/compare-config"
+
+payload={}
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+> **Respuesta - ONU fuera de sincronismo**
+
+```json
+{
+    "consultas:output": {
+        "result": 
+        "------------------------
+            service onus out-of-sync
+            devices {
+                device CEYD-01Z {
+                    config {
+                        xpon:interface {
+                            gpon-onu _1/3/1:30 {
+                                - description prueba-desincronismo;
+                                + description 26138349-JL6101-PEREIRA_ASIS;
+                            }
+                        }
+                    }     
+                }
+            }
+        "
+    }
+}
+```
+
+DESCRIPCION
+
+### **HTTP Request**
+
+`data/services/pon/infraestructure/onus=<olt>,<rack>,<shelf>,<slot>,<port>,<onu_id>/compare-config`
+
+### **Parámetros**
+| Key                    | Value                                                |
+|------------------------|------------------------------------------------------|
+| `olt`                  | Nombre de la OLT. Restringido a las OLTs desplegadas.|
+| `rack`                 | Número de rack.                                      |
+| `shelf`                | Número de shelf.                                     |
+| `slot`                 | Número de slot.                                      |
+| `port`                 | Número de puerto.                                    |
+| `onuid`                | ID de la ONU.                                        |
+
+### **Encabezados**
+`Accept: application/yang-data+json`   
+
+### **Atributos**
+Vacío
+
+### **Respuesta**
+Devuelve un JSON/XML indicando si la ONU y cada uno de sus servicios están en sincronismo o no.
+En caso de estar fuera de sincronismo, devuelve el delta de configuración.

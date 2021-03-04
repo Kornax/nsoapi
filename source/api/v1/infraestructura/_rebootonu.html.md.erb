@@ -1,0 +1,66 @@
+## <span style="background-color:Orange; color: white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Reboot ONU
+
+> **Ejemplo**
+
+```shell
+curl --location --request POST 'http://10.64.17.44:32772/restconf/data/services/pon/actions/reboot-onu' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic e3t1c3VhcmlvfX06e3twYXNzfX0=' \
+--data-raw '{
+    "input": [
+        {
+          "olt": "CEYD-01Z",
+          "rack": "1",
+          "shelf": "1",
+          "slot": "3",
+          "port": "1",
+          "onuid": "30"
+        }
+    ]
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/actions/reboot-onu"
+
+payload="{\r\n    \"input\": [\r\n        {\r\n          \"olt\": \"CEYD-01Z\",\r\n          \"rack\": \"1\",\r\n          \"shelf\": \"1\",\r\n          \"slot\": \"3\",\r\n          \"port\": \"1\",\r\n          \"onuid\": \"30\"\r\n        }\r\n    ]\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic e3t1c3VhcmlvfX06e3twYXNzfX0='
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+Hace el reboot físico de la ONU. Puede tardar unos minutos ya que depende del Hardware de la ONU.
+
+### **HTTP Request**
+
+`data/services/pon/actions/reboot-onu`
+
+### **Parámetros**
+Vacío
+
+### **Encabezados**
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`   
+
+### **Atributos**
+Vacío
+
+### **Respuesta**
+Parámetro "message" con las siguientes opciones de mensaje:
+
+| Mensaje                              | Descripción                                                                                |
+|--------------------------------------|--------------------------------------------------------------------------------------------|
+| `Operación Correcta`                 | La operación de cambio de código fue ejecutada correctamente.                              |
+| `La OLT <olt> no existe`             | Cuando la OLT ingresada no corresponde con ninguna de las desplegadas.                     |
+| `La ONU no existe`                   | Cuando la ONU ingresada (rack/shelf/slot/onuid para la OLT especificada) no existe.        |
+| `Error NSO al dar la baja ONU`       | Cuando se produjo otro tipo de error desconocido.                                          |

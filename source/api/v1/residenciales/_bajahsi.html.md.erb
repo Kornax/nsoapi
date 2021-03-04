@@ -1,0 +1,46 @@
+## <span style="background-color:#d22d2d; color: white; border-radius: 4px; font-size: 16px; text-align: center;">DELETE</span> - Baja HSI
+
+> **Ejemplo**
+
+```shell
+curl --location --request DELETE 'http://10.64.17.44:32772/restconf/data/services/pon/services/hsi=JL6101?no-out-of-sync-check&wait-device=CEYD-01Z' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4=' \
+--data-raw ''
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/services/hsi=JL6101?no-out-of-sync-check&wait-device=CEYD-01Z"
+
+payload={}
+headers = {
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("DELETE", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+
+Da la baja del servicio HSI especificado.
+
+### **HTTP Request**
+
+`data/services/pon/services/hsi=<hsi_code>?no-out-of-sync-check&wait-device=<olt>`
+
+### **Parámetros**
+| Key           | Value                                                 |
+|---------------|-------------------------------------------------------|
+| `hsi`         | Código de identificación del servicio HSI a verificar |
+| `wait-device` | Nombre de la OLT                                      |
+
+### **Encabezados**
+`Accept: application/yang-data+json`   
+
+### **Atributos**
+Vacío

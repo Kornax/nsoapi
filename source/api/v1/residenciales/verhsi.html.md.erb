@@ -1,0 +1,74 @@
+## <span style="background-color:Green; color: white; border-radius: 4px; font-size: 16px; text-align: center;">GET</span> - Ver HSI
+
+> **Ejemplo**
+
+```shell
+curl --location --request GET 'http://10.64.17.44:32772/restconf/data/services/pon/services/hsi=JL6101?content=config' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4='
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32772/restconf/data/services/pon/services/hsi=JL6101?content=config"
+
+payload={}
+headers = {
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+> **Respuesta**
+
+```json
+{
+    "antel-pon-hsi:hsi": {
+        "code": "JL6101",
+        "customer": "PEREIRA ASIS",
+        "onus": [
+            {
+                "olt": "CEYD-01Z",
+                "rack": 1,
+                "shelf": 1,
+                "slot": 3,
+                "port": 1,
+                "onuid": 30,
+                "service-type": "router",
+                "traffic-profile": {
+                    "downstream": "DOWN120MBPS",
+                    "upstream": "UPFXS"
+                }
+            }
+        ]
+    }
+}
+```
+
+Acción que muestra los parámetros de un servicio HSI específico.
+
+### **HTTP Request**
+
+`data/services/pon/services/hsi=<hsi_code>/content=config`
+
+### **Parámetros**
+| Key        | Value                                                 |
+|------------|-------------------------------------------------------|
+| `hsi`      | Código de identificación del servicio HSI a verificar |
+| `content`  | "config"                                              |
+
+### **Encabezados**
+`Accept: application/yang-data+json`   
+
+### **Atributos**
+Vacío
+
+### **Respuesta**
+JSON/XML que contiene la informacion del servicio HSI. 
+Los campos del JSON son los mismos que los requeridos para el alta HSI.

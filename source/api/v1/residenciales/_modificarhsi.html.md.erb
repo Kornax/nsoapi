@@ -1,0 +1,109 @@
+## <span style="background-color:Gray; color: white; border-radius: 4px; font-size: 16px; text-align: center;">PATCH</span> - Modificar HSI
+
+> **Ejemplo - cambio de perfiles de velocidad**
+
+```shell
+curl --location --request PATCH 'http://10.64.17.44:32729/restconf/data/services/pon/services/hsi?no-out-of-sync-check&wait-device=CEYD-01Z' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic cm9vdDpBbnRlbDFMb2dpY2FsaXMh' \
+--data-raw '{
+    "antel-pon-hsi:hsi": {
+        "code": "JL6101",
+        "onus": {
+            "olt": "CEYD-01Z",
+            "rack": "1",
+            "shelf": "1",
+            "slot": "3",
+            "port": "1",
+            "onuid": "30",
+            "traffic-profile": {
+                "downstream": "DOWN100MBPS",
+                "upstream": "UP5MBPS"
+            }
+        }
+    }
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32729/restconf/data/services/pon/services/hsi?no-out-of-sync-check&wait-device=CEYD-01Z"
+
+payload="{\r\n    \"antel-pon-hsi:hsi\": {\r\n        \"code\": \"JL6101\",\r\n        \"onus\": {\r\n            \"olt\": \"CEYD-01Z\",\r\n            \"rack\": \"1\",\r\n            \"shelf\": \"1\",\r\n            \"slot\": \"3\",\r\n            \"port\": \"1\",\r\n            \"onuid\": \"30\",\r\n            \"traffic-profile\": {\r\n                \"downstream\": \"DOWN100MBPS\",\r\n                \"upstream\": \"UP5MBPS\"\r\n            }\r\n        }\r\n    }\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic cm9vdDpBbnRlbDFMb2dpY2FsaXMh'
+}
+
+response = requests.request("PATCH", url, headers=headers, data=payload)
+
+print(response.text)
+```
+
+
+> **Ejemplo - cambio de tipo de servicio**
+
+```shell
+curl --location --request PATCH 'http://10.64.17.44:32729/restconf/data/services/pon/services/hsi?no-out-of-sync-check&wait-device=CEYD-01Z' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic cm9vdDpBbnRlbDFMb2dpY2FsaXMh' \
+--data-raw '{
+    "antel-pon-hsi:hsi": {
+        "code": "JL6101",
+        "onus": {
+            "olt": "CEYD-01Z",
+            "rack": "1",
+            "shelf": "1",
+            "slot": "3",
+            "port": "1",
+            "onuid": "30",
+            "service-type": "bridge"
+        }
+    }
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32729/restconf/data/services/pon/services/hsi?no-out-of-sync-check&wait-device=CEYD-01Z"
+
+payload="{\r\n    \"antel-pon-hsi:hsi\": {\r\n        \"code\": \"JL6101\",\r\n        \"onus\": {\r\n            \"olt\": \"CEYD-01Z\",\r\n            \"rack\": \"1\",\r\n            \"shelf\": \"1\",\r\n            \"slot\": \"3\",\r\n            \"port\": \"1\",\r\n            \"onuid\": \"30\",\r\n            \"service-type\": \"bridge\"\r\n        }\r\n    }\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic cm9vdDpBbnRlbDFMb2dpY2FsaXMh'
+}
+
+response = requests.request("PATCH", url, headers=headers, data=payload)
+
+print(response.text)
+```
+
+Modifica alguno de los parámetros de un servicio HSI existente. 
+El código de identificación no puede ser cambiado con éste método (Ver Cambiar-código-HSI). 
+También puede agregar una configuración nueva en caso de agregar una nueva ONU a la lista del servicio.
+
+### **HTTP Request**
+
+`/data/services/pon/services/hsi?no-out-of-sync-check&wait-device=<olt>`
+
+### **Parámetros**
+| Key                    | Value            |
+|------------------------|------------------|
+| `no-out-of-sync-check` |                  |
+| `wait-device`          | Nombre de la OLT |
+
+### **Encabezados**
+
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`  
+
+### **Atributos**
+
+Mismos atributos que para el alta HSI. No es nesesario enviar todos, solo los identificadores de servicio y ONU 
+y los parámetros que se requiera modificar.

@@ -1,0 +1,114 @@
+## <span style="background-color:Orange; color:white; border-radius: 4px; font-size: 16px; text-align: center;">POST</span> - Alta HSI
+
+> **Ejemplo**
+
+```shell
+curl --location --request POST 'http://10.64.17.44:32792/restconf/data/services/pon/services?no-out-of-sync-check&wait-device=CEYD-01Z' \
+--header 'Content-Type: application/yang-data+json' \
+--header 'Accept: application/yang-data+json' \
+--header 'Authorization: Basic YWRtaW46YWRtaW4=' \
+--data-raw '{
+    "antel-pon-hsi:hsi": {
+        "code": "JL6101",
+        "customer": "PEREIRA ASIS",
+        "onus": {
+            "olt": "CEYD-01Z",
+            "rack": "1",
+            "shelf": "1",
+            "slot": "3",
+            "port": "1",
+            "onuid": "30",
+            "service-type": "router",
+            "traffic-profile": {
+                "downstream": "DOWN100MBPS",
+                "upstream": "UPFXS"
+            }
+        }
+    }
+}'
+```
+
+```python
+import requests
+
+url = "http://10.64.17.44:32792/restconf/data/services/pon/services?no-out-of-sync-check&wait-device=CEYD-01Z"
+
+payload="{\r\n    \"antel-pon-hsi:hsi\": {\r\n        \"code\": \"JL6101\",\r\n        \"customer\": \"PEREIRA ASIS\",\r\n        \"onus\": {\r\n            \"olt\": \"CEYD-01Z\",\r\n            \"rack\": \"1\",\r\n            \"shelf\": \"1\",\r\n            \"slot\": \"3\",\r\n            \"port\": \"1\",\r\n            \"onuid\": \"30\",\r\n            \"service-type\": \"router\",\r\n            \"traffic-profile\": {\r\n                \"downstream\": \"DOWN100MBPS\",\r\n                \"upstream\": \"UPFXS\"\r\n            }\r\n        }\r\n    }\r\n}"
+headers = {
+  'Content-Type': 'application/yang-data+json',
+  'Accept': 'application/yang-data+json',
+  'Authorization': 'Basic YWRtaW46YWRtaW4='
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+```
+
+> **Posibles salidas**
+
+> Alta creada correctamente - 201 Created
+
+```json
+{
+  "commit-queue": {
+    "id": "1614016683699",
+    "status": "completed"
+  }
+}
+```
+
+
+> Error por ONU con servicio HSI ya configurado - 400 Bad Request
+
+```json
+{
+  "errors": {
+    "error": [
+      {
+        "error-message": "Python cb_create error. La ONU ya tiene un servicio HSI configurado",
+        "error-path": "/tailf-ncs:services/antel-pon:pon/services/antel-pon-hsi:hsi=JL6101",
+        "error-tag": "malformed-message",
+        "error-type": "application"
+      }
+    ]
+  }
+}
+```
+
+Crea un servicio HSI identificado por su código. 
+Cada servicio HSI puede configurarse en más de una ONU con características distintas (tipo, velocidades, etc). 
+
+### **HTTP Request**
+
+`/data/services/pon/services?no-out-of-sync-check&wait-device=<olt>`
+
+### **Parámetros**
+| Key                    | Value            |
+|------------------------|------------------|
+| `no-out-of-sync-check` |                  |
+| `wait-device`          | Nombre de la OLT |
+
+### **Encabezados**
+
+`Content-Type: application/yang-data+json`  
+`Accept: application/yang-data+json`  
+
+### **Atributos**
+
+| Atributo          | Mandatorio | Tipo                          | Descripción                                                                                                                     |
+|-------------------|------------|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `code`            | Si         | String                        | Código que identifica al servicio HSI.                                                                                          |
+| `customer`        | No         | String                        | Apellidos del cliente separados por espacio.                                                                                    |
+| `onus`            |            | Lista                         | Lista de onus donde se va a configurar el/los servicios(puede ser más de una). Contiene los elementos descriptos a continuación |
+| `olt`             | Si         | String                        | Nombre de la OLT. Restringido a las OLTs desplegadas.                                                                           |
+| `rack`            | Si         | Int                           | Número de rack.                                                                                                                 |
+| `shelf`           | Si         | Int                           | Número de shelf.                                                                                                                |
+| `slot`            | Si         | Int                           | Número de slot.                                                                                                                 |
+| `port`            | Si         | Int                           | Número de puerto                                                                                                                |
+| `onuid`           | Si         | Int                           | ID de la ONU.                                                                                                                   |
+| `service-type`    | Si         | Enum: "bridge"       "router" | Tipo de servicio HSI.                                                                                                           |
+| `wifi-mesh`       | No         | Boolean Default false         | Indica si el servicio tiene wifi-mesh. Solo es posible configurarlo en "true" cuando el service-type es "router"                |
+| `traffic-profile` |            | Contenedor                    | Perfiles de velocidad del servicio                                                                                              |
+| `downstream`      | Si         | String                        | Perfil de velocidad de bajada. Restringido a los perfiles conocidos (Ver<a href="./NSO-PON-RESTCONF-API#lista-de-perfiles-de-velocidad"> anexo </a>por la lista completa).                                                           |
+| `upstream`        | Si         | String                        | Perfil de velocidad de subida. Restringido a los perfiles conocidos (Ver<a href="./NSO-PON-RESTCONF-API#lista-de-perfiles-de-velocidad"> anexo </a>por la lista completa).                                                             |
